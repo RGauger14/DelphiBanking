@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{AB33EAD0-FD5D-49EA-BBFD-7CD1413AE0FD}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="BankServerProject.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Project1.dproj">
+            <Dependencies>BankServerProject.dproj</Dependencies>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="BankServerProject">
+        <MSBuild Projects="BankServerProject.dproj"/>
+    </Target>
+    <Target Name="BankServerProject:Clean">
+        <MSBuild Projects="BankServerProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BankServerProject:Make">
+        <MSBuild Projects="BankServerProject.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Project1" DependsOnTargets="BankServerProject">
+        <MSBuild Projects="Project1.dproj"/>
+    </Target>
+    <Target Name="Project1:Clean" DependsOnTargets="BankServerProject:Clean">
+        <MSBuild Projects="Project1.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Project1:Make" DependsOnTargets="BankServerProject:Make">
+        <MSBuild Projects="Project1.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="BankServerProject;Project1"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="BankServerProject:Clean;Project1:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="BankServerProject:Make;Project1:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
